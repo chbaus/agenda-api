@@ -1,6 +1,5 @@
-const { response } = require("express");
 const express = require("express");
-const { v4: uuidv4 } = require("uuid");
+//const { v4: uuidv4 } = require("uuid");
 const cors = require("cors");
 const { logger, logger2 } = require("./middlewares");
 const app = express();
@@ -17,15 +16,24 @@ const requestLogger = (request, response, next) => {
   next();
 };
 
+const obtenerId = () => {
+  let nextId = 1;
+  if (personas.length != 0) {
+    const ids = personas.map((p) => p.id);
+    nextId = Math.max(...ids) + 1;
+  }
+  return nextId;
+};
+
 const personas = [];
 
 app.use(cors());
 app.use(express.json());
 app.use(logger2);
 
-app.get("/", ((req, res)=>{
+app.get("/", (req, res) => {
   res.send("<h1>Hello World</h1>");
-}))
+});
 
 // devuelve todas las personas
 app.get("/api/personas", (req, res) => {
@@ -43,7 +51,7 @@ app.post("/api/personas", (req, res) => {
   }
   let { name, number } = body;
   const newPersona = {
-    id: uuidv4(),
+    id: obtenerId(),
     name: name,
     number: number,
   };
@@ -67,7 +75,7 @@ app.get("/info", (req, res) => {
 
 // get persona por id
 app.get("/api/personas/:id", (req, res) => {
-  let id = req.params.id;
+  let id = Number(req.params.id);
   //console.log(id);
   let persona = personas.find((p) => p.id === id);
   console.log(persona);
@@ -78,7 +86,7 @@ app.get("/api/personas/:id", (req, res) => {
 // update persona por id
 app.put("/api/personas/", (req, res) => {
   const persona = req.body;
-  
+
   let index = personas.findIndex((p) => p.id === persona.id);
   if (index != -1) {
     for (const key in persona) {
