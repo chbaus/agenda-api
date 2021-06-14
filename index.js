@@ -87,7 +87,7 @@ app.get("/api/personas/:id", (req, res) => {
 app.put("/api/personas/", (req, res) => {
   const persona = req.body;
 
-  let index = personas.findIndex((p) => p.id === persona.id);
+  let index = personas.findIndex((p) => p.id === Number(persona.id));
   if (index != -1) {
     for (const key in persona) {
       if (Object.hasOwnProperty.call(personas[index], key)) {
