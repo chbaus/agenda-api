@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require("uuid");
 const cors = require("cors");
 const { logger, logger2 } = require("./middlewares");
 const app = express();
-const PORT = 5001;
+const PORT = process.env.PORT || 5001;
 
 const unknownEndPoint = (request, response) => {
   response.status(404).json({ error: "unknown endpoint" });
