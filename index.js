@@ -23,6 +23,10 @@ app.use(cors());
 app.use(express.json());
 app.use(logger2);
 
+app.get("/", ((req, res)=>{
+  res.send("<h1>Hello World</h1>");
+}))
+
 // devuelve todas las personas
 app.get("/api/personas", (req, res) => {
   res.json(personas);
